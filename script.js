@@ -1,429 +1,127 @@
-:root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --card-bg: rgba(15, 23, 42, 0.85);
-        }
+// script.js (Corrected Version)
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const imageUpload = document.getElementById('imageUpload');
+    const videoUpload = document.getElementById('videoUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const videoPreview = document.getElementById('videoPreview');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const analyzeVideoButton = document.getElementById('analyzeVideoButton');
+    const predictionResult = document.getElementById('prediction');
+    const confidenceLevel = document.getElementById('confidenceLevel');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const imageUploadArea = document.getElementById('image-upload-area');
+    const videoUploadArea = document.getElementById('video-upload-area');
 
-        body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: white;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-            position: relative;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        }
+    let selectedImage = null;
+    let selectedVideo = null;
 
-        .aurora-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                rgba(99, 102, 241, 0.15) 0%, 
-                rgba(139, 92, 246, 0.15) 20%, 
-                rgba(236, 72, 153, 0.15) 40%, 
-                rgba(251, 146, 60, 0.15) 60%, 
-                rgba(16, 185, 129, 0.15) 80%);
-            background-size: 300% 300%;
-            animation: aurora 15s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes aurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-
-        .logo {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            font-size: 1.3rem;
-            color: #cbd5e1;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .app-description {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 2rem auto;
-            max-width: 900px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .app-description h2 {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .description-content {
-            display: flex;
-            justify-content: space-between;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .description-item {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .description-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .description-item h3 {
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .content-wrapper {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
-        .detection-section {
-            flex: 1;
-            min-width: 400px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        .upload-area {
-            margin: 1.5rem 0;
-            border: 2px dashed rgba(99, 102, 241, 0.4);
-            border-radius: 15px;
-            padding: 2rem;
-            position: relative;
-            transition: all 0.3s ease;
-            background: rgba(30, 41, 59, 0.5);
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .upload-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .upload-text {
-            font-weight: 500;
-            color: #e2e8f0;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-
-        .upload-area:hover .upload-icon {
-            color: var(--accent);
-            transform: scale(1.1);
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .preview-container {
-            margin-top: 1.5rem;
-            max-width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            min-height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px dashed rgba(99, 102, 241, 0.3);
-        }
-
-        .preview-media {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 12px;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .placeholder-text {
-            color: #94a3b8;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .analyze-button {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-            width: 100%;
-            justify-content: center;
-        }
-
-        .analyze-button:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-        }
-
-        .analyze-button:disabled {
-            background: #475569;
-            color: #94a3b8;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .button-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .analyze-button:hover:not(:disabled) .button-icon {
-            transform: rotate(10deg);
-        }
-
-        .result-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            margin-top: 2rem;
-        }
-
-        .result-content {
-            padding: 1.5rem;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 15px;
-            min-height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        #prediction {
-            font-size: 1.5rem;
-            color: #e2e8f0;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .confidence-meter {
-            width: 80%;
-            height: 20px;
-            background: rgba(71, 85, 105, 0.5);
-            border-radius: 10px;
-            margin: 2rem auto 1rem;
-            overflow: hidden;
-            position: relative;
-            max-width: 500px;
-        }
-
-        .confidence-level {
-            height: 100%;
-            width: 0%;
-            border-radius: 10px;
-            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
-            transition: width 0.8s ease;
-        }
-
-        .confidence-labels {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-            max-width: 500px;
-            margin: 0 auto;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-
-        .progress-container {
-            display: none;
-            width: 100%;
-            background: rgba(71, 85, 105, 0.5);
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            overflow: hidden;
-            max-width: 500px;
-            margin: 1rem auto;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .footer {
-            margin-top: auto;
-            text-align: center;
-            padding: 2rem 0;
-            color: #64748b;
-            font-size: 1rem;
-        }
-
-        .tech-stack {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .tech-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(30, 41, 59, 0.7);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 1100px) {
-            .content-wrapper {
-                flex-direction: column;
+    // Drag and drop functionality is great! No changes needed here.
+    function setupDragDrop(area, input) {
+        area.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            area.classList.add('drag-over');
+        });
+        area.addEventListener('dragleave', () => {
+            area.classList.remove('drag-over');
+        });
+        area.addEventListener('drop', (e) => {
+            e.preventDefault();
+            area.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) {
+                input.files = e.dataTransfer.files;
+                const event = new Event('change');
+                input.dispatchEvent(event);
             }
+        });
+    }
+
+    setupDragDrop(imageUploadArea, imageUpload);
+    setupDragDrop(videoUploadArea, videoUpload);
+
+    // Image upload handling is also good. No changes needed.
+    imageUpload.addEventListener('change', (event) => {
+        selectedImage = event.target.files[0];
+        if (selectedImage) {
+            imagePreview.innerHTML = '';
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-media');
+                imagePreview.appendChild(img);
+            };
+            reader.readAsDataURL(selectedImage);
+            analyzeButton.disabled = false;
+        }
+    });
+
+    // Video upload handling is also fine.
+    videoUpload.addEventListener('change', (event) => {
+        selectedVideo = event.target.files[0];
+        if (selectedVideo) {
+            videoPreview.innerHTML = '';
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(selectedVideo);
+            video.controls = true;
+            video.classList.add('preview-media');
+            videoPreview.appendChild(video);
+            analyzeVideoButton.disabled = false;
+        }
+    });
+
+    // This is the main function to fix.
+    async function sendToBackend(file, type) {
+        // --- FIX #2: Change the FormData key to 'image' ---
+        const formData = new FormData();
+        formData.append('image', file); // The backend expects the key to be 'image'
+
+        predictionResult.textContent = `Analyzing ${type}...`;
+        confidenceLevel.style.width = '0%';
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '30%';
+
+        try {
+            // --- FIX #1: Change the URL to '/analyze' ---
+            const response = await fetch('/analyze', { // The backend route is '/analyze'
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) throw new Error("Server error: " + response.statusText);
+
+            const result = await response.json();
+            progressBar.style.width = '100%';
+            document.getElementById('result-section-id').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // --- FIX #3: Handle the actual JSON response from the backend ---
+            // The backend sends 'prediction' and 'confidence' (as a string like "95.24%")
+            const confidenceValue = parseFloat(result.confidence); // Convert "95.24%" to 95.24
             
-            .detection-section {
-                min-width: 100%;
-            }
-        }
+            predictionResult.innerHTML = `${result.prediction}  
+Confidence: ${result.confidence}`;
+            confidenceLevel.style.width = `${confidenceValue}%`; // Use the number for the width
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .section-title {
-                font-size: 1.3rem;
-            }
-            
-            .upload-area {
-                padding: 1.5rem;
-            }
+        } catch (error) {
+            predictionResult.textContent = "Error analyzing file. Please try again.";
+            console.error(error);
+        } finally {
+            // A small improvement: hide the progress bar after a short delay
+            setTimeout(() => {
+                progressContainer.style.display = 'none';
+            }, 1000);
         }
+    }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            header {
-                padding: 1rem 0;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .detection-section {
-                padding: 1.5rem;
-            }
-        }
+    analyzeButton.addEventListener('click', () => {
+        if (selectedImage) sendToBackend(selectedImage, 'image');
+    });
+
+    analyzeVideoButton.addEventListener('click', () => {
+        // Note: The current backend only supports images. This will fail.
+        // For now, we can show a message.
+        alert("Video analysis is not yet implemented in the backend.");
+        // if (selectedVideo) sendToBackend(selectedVideo, 'video');
+    });
+});
