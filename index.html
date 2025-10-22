@@ -9,16 +9,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="aurora-bg"></div>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <h1>Deepfake Detection</h1>
-            <p class="subtitle">Advanced AI-powered deepfake detection for images and videos</p>
-        </header>
-
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" id="close-btn">&times;</a>
         <div class="app-description">
             <h2>How It Works</h2>
             <div class="description-content">
@@ -39,8 +31,21 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="content-wrapper">
+    <div id="main-content">
+        <div class="aurora-bg"></div>
+        <div class="container">
+            <header>
+                <button class="open-btn" id="open-btn">&#9776;</button>
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1>Deepfake Detection</h1>
+                <p class="subtitle">Advanced AI-powered deepfake detection for images and videos</p>
+            </header>
+
+            <div class="content-wrapper">
             <div class="detection-section">
                 <div class="section-title">
                     <i class="fas fa-image"></i>
@@ -155,6 +160,7 @@
                 </div>
             </div>
         </footer>
+    </div>
     </div>
 
     <script src="script.js"></script>
