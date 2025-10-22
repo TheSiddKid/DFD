@@ -1,3 +1,13 @@
+document.getElementById('open-btn').addEventListener('click', () => {
+    document.getElementById('sidebar').style.width = '250px';
+    document.getElementById('main-content').style.marginLeft = '250px';
+});
+
+document.getElementById('close-btn').addEventListener('click', () => {
+    document.getElementById('sidebar').style.width = '0';
+    document.getElementById('main-content').style.marginLeft= '0';
+});
+
 // script.js (Corrected Version)
 
 document.addEventListener('DOMContentLoaded', () => {
